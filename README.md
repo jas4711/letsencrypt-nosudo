@@ -79,6 +79,8 @@ openssl req -new -sha256 -key domain.key -subj "/" -reqexts SAN -config <(cat /e
 
 Third, you run the script using python and passing in the path to your user
 account public key and the domain CSR. The paths can be relative or absolute.
+By default the script will ask you to start a webserver on port 80.  If you
+already have one, use the `--file-based` option instead.
 
 ```sh
 python sign_csr.py --public-key user.pub domain.csr > signed.crt
@@ -269,15 +271,15 @@ ubuntu@letsencrypt.daylightpirates.org:~$
 ##How to use the signed https certificate
 
 The signed https certificate that is output by this script can be used along
-with your private key to run an https server. You just security transfer (using
+with your private key to run an https server. You just securely transfer (using
 `scp` or similar) the private key and signed certificate to your server, then
 include them in the https settings in your web server's configuration. Here's an
 example on how to configure an nginx server:
 
 ```
 #NOTE: For nginx, you need to append the Let's Encrypt intermediate cert to your cert
-user@hostname:~$ wget https://letsencrypt.org/certs/lets-encrypt-x1-cross-signed.pem
-user@hostname:~$ cat signed.crt lets-encrypt-x1-cross-signed.pem > chained.pem
+user@hostname:~$ wget https://letsencrypt.org/certs/lets-encrypt-x3-cross-signed.pem
+user@hostname:~$ cat signed.crt lets-encrypt-x3-cross-signed.pem > chained.pem
 ```
 
 ```nginx

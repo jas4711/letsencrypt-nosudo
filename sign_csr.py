@@ -22,7 +22,7 @@ def sign_csr(pubkey, csr, email=None, file_based=False):
     """
     #CA = "https://acme-staging.api.letsencrypt.org"
     CA = "https://acme-v01.api.letsencrypt.org"
-    TERMS = "https://letsencrypt.org/documents/LE-SA-v1.0.1-July-27-2015.pdf"
+    TERMS = "https://letsencrypt.org/documents/LE-SA-v1.1.1-August-1-2016.pdf"
     nonce_req = urllib2.Request("{0}/directory".format(CA))
     nonce_req.get_method = lambda : 'HEAD'
 
@@ -396,7 +396,12 @@ sudo python -c "import BaseHTTPServer; \\
 
     # Step 15: Convert the signed cert from DER to PEM
     sys.stderr.write("Certificate signed!\n")
-    sys.stderr.write("You can stop running the python command on your server (Ctrl+C works).\n")
+
+    if file_based:
+        sys.stderr.write("You can remove the acme-challenge file from your webserver now.\n")
+    else:
+        sys.stderr.write("You can stop running the python command on your server (Ctrl+C works).\n")
+
     signed_der64 = base64.b64encode(signed_der)
     signed_pem = """\
 -----BEGIN CERTIFICATE-----
